@@ -2,14 +2,14 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { SharedArray } from 'k6/data';
 
-// Cargar usuarios desde el CSV
+// Cargar usuarios desde el users.csv
 const users = new SharedArray('usuarios', function () {
   return open('./users.csv')
     .split('\n')
-    .slice(1) // quitar la cabecera
+    .slice(1) 
     .map((line) => {
       const [user, passwd] = line.split(',');
-      return { user: user, passwd: passwd };
+      return { username: user, passwd: passwd };
     });
 });
 
@@ -59,7 +59,7 @@ export default function () {
     isJson = false;
   }
 
-  check(res, {
+ check(res, {
     'Status 200': (r) => r.status === 200,
     'Respuesta < 1.5s': (r) => r.timings.duration < 1500,
     'Respuesta es JSON': () => isJson,
@@ -67,5 +67,5 @@ export default function () {
   });
 
   sleep(Math.random() * 3); // pausa aleatoria entre 0 y 3 seg
+  
 }
-

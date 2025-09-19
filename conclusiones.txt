@@ -1,0 +1,28 @@
+EJERCICIO DE PRUEBA DE CARGA - LOGIN TEST
+--------------------------------------------
+
+1. Configuración de la prueba:
+   - Herramienta utilizada: K6 v0.49.0
+   - Escenario: constant-arrival-rate
+   - Objetivo: 20 TPS durante 1 minuto
+   - Dataset: users.csv (5 usuarios)
+
+2. Resultados principales:
+   - Solicitudes totales: 1176
+   - Latencia promedio: 338 ms
+   - P95 de latencia: 424 ms (menor a 1.5 segundos, dentro del objetivo)
+   - Tasa de error: 77.89% (supera ampliamente el máximo permitido del 3%)
+
+3. Hallazgos:
+   - La mayoría de las peticiones no retornaron `status 200`, lo cual indica fallas de autenticación o del servicio.
+   - Solo el 22% de las respuestas contenían un `token` válido en el JSON, evidenciando que el login no es estable con los usuarios de prueba.
+   - A pesar del alto porcentaje de errores, los tiempos de respuesta en las peticiones exitosas fueron adecuados (p95 < 1.5s).
+   - El escenario alcanzó el objetivo de 20 TPS de manera sostenida.
+
+4. Conclusiones:
+   - El servicio de autenticación presenta una alta tasa de fallas con los datos proporcionados se entiende que son datos de prueba.
+   - Se cumplió con el objetivo de carga (20 TPS) y el tiempo de respuesta esperado (<1.5s), pero no se cumplió la tasa de error aceptable (<3%) se entiende que son datos de prueba.
+
+5. Próximos pasos:
+   - Probar con un dataset válido y/o ambientes más controlados.
+   
